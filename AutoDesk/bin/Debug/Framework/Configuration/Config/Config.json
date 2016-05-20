@@ -1,0 +1,98 @@
+﻿{
+  "Timeouts": {
+	"explicitly": 20,
+	"implicitly": 25,
+	"pageLoad": 30,
+	"script": 30
+  },
+  "Drivers": [
+	{
+	  "Name": "IExplorer",
+	  "Proxy": {
+		"Value": "",
+		"Type": "",
+		"Exceptions": ""
+	  },
+	  "Capabilities": [
+		{
+		  "Name": "browserName",
+		  "Value": "internet explorer"
+		},
+		{
+		  "Name": "platform",
+		  "Value": "WINDOWS"
+		},
+		{
+		  "Name": "version",
+		  "Value": ""
+		},
+		{
+		  "Name": "ignoreZoomSetting",
+		  "Value": "false"
+		},
+		{
+		  "Name": "nativeEvents",
+		  "Value": "false"
+		},
+		{
+		  "Name": "requireWindowFocus",
+		  "Value": "false"
+		},
+		{
+		  "Name": "initialBrowserUrl",
+		  "Value": "about:blank"
+		},
+		{
+		  "Name": "enablePersistentHover",
+		  "Value": "false"
+		},
+		{
+		  "Name": "ie.forceCreateProcessApi",
+		  "Value": "false"
+		},
+		{
+		  "Name": "ie.forceShellWindowsApi",
+		  "Value": "false"
+		},
+		{
+		  "Name": "ie.browserCommandLineSwitches",
+		  "Value": ""
+		},
+		{
+		  "Name": "ie.usePerProcessProxy",
+		  "Value": "false"
+		},
+		{
+		  "Name": "ie.ensureCleanSession",
+		  "Value": "true"
+		}
+	  ]
+	},
+	{
+	  "Name": "Chrome",
+	  "Proxy": {
+		"Value": "",
+		"Type": "",
+		"Exceptions": ""
+	  },
+	  "Arguments": [ ],
+	  "Capabilities": [
+		{
+		  "Name": "security.cookie_behavior",
+		  "Value": "0"
+		}
+	  ]
+	},
+	{
+	  "Name": "Firefox",
+	  "Proxy": {
+		"Value": "",
+		"Type": "",
+		"Exceptions": ""
+	  },
+	  "Arguments": [ ],
+	  "Capabilities": [
+	  ]
+	}
+  ]
+}

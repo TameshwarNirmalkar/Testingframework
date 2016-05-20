@@ -1,0 +1,252 @@
+﻿using Frontier.Framework.Enums;
+using System.Collections;
+using Microsoft.VisualBasic.FileIO;
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+
+namespace Frontier.IHD.DataSource
+{
+    public class DataProviderHelper
+    {
+        /// <summary>
+        /// Generic method to process the csv source file
+        /// </summary>
+        /// <param name="csvFile">cCsv file name with partial path</param>
+        /// <returns>Role and array of parameters</returns>
+        private static IEnumerable CsvDataSource(string csvFile)
+        {
+            var reader = new TextFieldParser(csvFile);
+            reader.SetDelimiters(",");
+            while (!reader.EndOfData)
+            {
+                string[] fields = reader.ReadFields();
+                Roles role = (Roles)Enum.Parse(typeof(Roles), fields[0]);
+                List<string> parameters = new List<string>();
+                for (int i = 1; i < fields.Length; i++)
+                {
+                    parameters.Add(fields[i]);
+                }
+                yield return new TestCaseData(role, parameters);
+            }
+        }
+
+        /// <summary>
+        /// Data source for all the ViewModes suite of tests
+        /// </summary>
+        /// <returns>Role and array of parameters</returns>
+        public static IEnumerable CsvDataSource_TC12344ViewModes() { return CsvDataSource("DataSource\\ViewModes\\TC12344_OpenNewTabsOfCustomerSession.csv"); }
+
+        /// <summary>
+        /// Data source for all the ViewModes suite of tests
+        /// </summary>
+        /// <returns>Role and array of parameters</returns>
+        public static IEnumerable CsvDataSource_TC13233ViewModes() { return CsvDataSource("DataSource\\ViewModes\\TC13233_CloseAllSubviewsOfCustomerSession.csv"); }
+
+        /// <summary>
+        /// Data source for all the ViewModes suite of tests
+        /// </summary>
+        /// <returns>Role and array of parameters</returns>
+        public static IEnumerable CsvDataSource_TC13251ViewModes() { return CsvDataSource("DataSource\\ViewModes\\TC13251_SubviewsForEachCustomerSession.csv"); }
+
+        /// <summary>
+        /// Data source for TC 12578 Search and Validation - "Validation Successful" button behavior when validated a Non-Billed DPI customer
+        /// </summary>
+        /// <returns>Role, BNT</returns>
+        public static IEnumerable TC12578_ValidationSuccessfulNonBilledDPIcustomer() { return CsvDataSource("DataSource\\SearchAndValidationTestSuite\\TC12578ValidationSuccessfulNonBilledDPIcustomer.csv"); }
+
+
+        /// <summary>
+        /// TC 12442 : Authorized Users: Check fields available to validate on customer
+        /// </summary>
+        /// <returns>Role, BNT</returns>
+        public static IEnumerable TC12442_ChecksFieldsOnCustomerWithAuthorizedUser() { return CsvDataSource("DataSource\\SearchAndValidationTestSuite\\TC12442_ChecksFieldsOnCustomerWithAuthorizedUser.csv"); }
+
+        /// <summary>
+        /// TC12451 : Authorized Users: Search and validation - Authorized Users: Check fields available to validate on customer
+        /// </summary>
+        /// <returns>Role, BNT</returns>
+        public static IEnumerable TC12451_ChecksFieldsOnCustomerWithAuthorizedUser() { return CsvDataSource("DataSource\\SearchAndValidationTestSuite\\TC12451_ChecksFieldsOnCustomerWithAuthorizedUser.csv"); }
+
+
+        public static IEnumerable TC12540_SearchByWTNWithDifferentNumberOfDigitsData() {
+            return CsvDataSource("DataSource\\SearchAndValidationTestSuite\\TC12540_SearchByWTNWithDifferentNumberOfDigits.csv");
+        }
+
+        /// <summary>
+        /// Data source for all the Search Validation suite of tests
+        /// </summary>
+        /// <returns>Role and array of parameters</returns>
+
+        public static IEnumerable TC12402_DoesNotShowAlertMessageWhenAccessingWithSpecialAccounts()
+        {
+            var reader = new TextFieldParser("DataSource\\SearchTestSuite\\TC12402_DoesNotShowAlertMessageWhenAccessingWithSpecialAccounts.csv");
+            reader.SetDelimiters(",");
+            while (!reader.EndOfData)
+            {
+                string[] fields = reader.ReadFields();
+                Roles role = (Roles)Enum.Parse(typeof(Roles), fields[0]);
+                List<string> User = new List<string>();
+                for (int i = 1; i < fields.Length; i++)
+                {
+                    User.Add(fields[i]);
+                }
+                yield return new TestCaseData(role, User);
+            }
+        }
+
+        /// <summary>
+        /// Data source for all the Search Validation suite of tests
+        /// </summary>
+        /// <returns>Role and array of parameters</returns>
+
+        public static IEnumerable TC12420_AbilityToSelectResultsAsLinksAndGoBack()
+        {
+            var reader = new TextFieldParser("DataSource\\SearchTestSuite\\TC12420_AbilityToSelectResultsAsLinksAndGoBack.csv");
+            reader.SetDelimiters(",");
+            while (!reader.EndOfData)
+            {
+                string[] fields = reader.ReadFields();
+                Roles role = (Roles)Enum.Parse(typeof(Roles), fields[0]);
+                List<string> User = new List<string>();
+                for (int i = 1; i < fields.Length; i++)
+                {
+                    User.Add(fields[i]);
+                }
+                yield return new TestCaseData(role, User);
+            }
+        }
+
+        public static IEnumerable TC15191SearchValidateWTN()
+        {
+            var reader = new TextFieldParser("DataSource\\TC15191SearchValidateWTN.csv");
+            reader.SetDelimiters(",");
+            while (!reader.EndOfData)
+            {
+                string[] fields = reader.ReadFields();
+                Roles role = (Roles)Enum.Parse(typeof(Roles), fields[0]);
+                string WTN = fields[1];
+                yield return new TestCaseData(role, WTN);
+            }
+        }
+
+        public static IEnumerable TC12335_SearchByTNPlusOtherField()
+        {
+            var reader = new TextFieldParser("DataSource\\SearchTestSuite\\TC12335_SearchByTNPlusOtherField.csv");
+            reader.SetDelimiters(",");
+            while (!reader.EndOfData)
+            {
+                string[] fields = reader.ReadFields();
+                Roles role = (Roles)Enum.Parse(typeof(Roles), fields[0]);
+                List<string> User = new List<string>();
+                for (int i = 1; i < fields.Length; i++)
+                {
+                    User.Add(fields[i]);
+                }
+                yield return new TestCaseData(role, User);
+            }
+        }
+        //-Rahul
+        public static IEnumerable TC12530_ReprocessButtonAppearsInSearchWindow()
+        {
+            var reader = new TextFieldParser("DataSource\\SearchTestSuite\\TC12530_ReprocessButtonAppearsInSearchWindow.csv");
+            reader.SetDelimiters(",");
+            while (!reader.EndOfData)
+            {
+                string[] fields = reader.ReadFields();
+                Roles role = (Roles)Enum.Parse(typeof(Roles), fields[0]);
+                List<string> User = new List<string>();
+                for (int i = 1; i < fields.Length; i++)
+                {
+                    User.Add(fields[i]);
+                }
+                yield return new TestCaseData(role, User);
+            }
+        }
+    
+        public static IEnumerable TC15185GetRoles()
+        {
+            var reader = new TextFieldParser("DataSource\\OnlyRoles.csv");
+            reader.SetDelimiters(",");
+            while (!reader.EndOfData)
+            {
+                string[] fields = reader.ReadFields();
+                Roles role = (Roles)Enum.Parse(typeof(Roles), fields[0]);
+                yield return new TestCaseData(role);
+            }
+        }
+
+        public static IEnumerable TC13912_BillingPageValidations()
+        {
+            var reader = new TextFieldParser("DataSource\\SearchAndValidationTestSuite\\TC13912_BillingPageValidations.csv");
+            reader.SetDelimiters(",");
+            while (!reader.EndOfData)
+            {
+                string[] fields = reader.ReadFields();
+                Roles role = (Roles)Enum.Parse(typeof(Roles), fields[0]);
+                List<string> User = new List<string>();
+                for (int i = 1; i < fields.Length; i++)
+                {
+                    User.Add(fields[i]);
+                }
+                yield return new TestCaseData(role, User);
+            }
+        }
+
+        /// <summary>
+        /// Data source for all the TC15183 
+        /// </summary>
+        /// <returns>Role and array of parameters</returns>
+        public static IEnumerable CsvDataSource_TC12511() { return CsvDataSource("DataSource\\SearchAndValidationTestSuite\\TC12511_SearchAndValidation.csv"); } //task 15183
+
+        /// <summary>
+        /// Data source for all the TC15192
+        /// </summary>
+        /// <returns>Role and array of parameters</returns>
+        public static IEnumerable CsvDataSource_TC15192() { return CsvDataSource("DataSource\\TC15183_SearchAndValidation.csv"); }
+
+        public static IEnumerable TC14040_DoNotSelectConfirmationMethodOnValidation() { return CsvDataSource("DataSource\\SearchAndValidationTestSuite\\TC14040_DoNotSelectConfirmationMethodOnValidation.csv"); }
+
+        /// <summary>
+        /// Data source for all the TC12693
+        /// </summary>
+        /// <returns>Role and array of parameters</returns>
+        public static IEnumerable CsvDataSource_TC12693()
+        {
+            return CsvDataSource("DataSource\\SearchAndValidationTestSuite\\TC12693_SearchAndValidateWTN.csv");
+        }
+
+        /// <summary>
+        /// Data source for all the TC12696
+        /// </summary>
+        /// <returns>Role and array of parameters</returns>
+        public static IEnumerable CsvDataSource_TC12696()
+        {
+            return CsvDataSource("DataSource\\SearchAndValidationTestSuite\\TC12696_AgentUnableToOpenMoreThanThreeSessions.csv");
+        }
+
+        /// <summary>
+        /// Data source for all the TC12333
+        /// </summary>
+        /// <returns>Role and array of parameters</returns>
+        public static IEnumerable TC12333_SearchByBTNWithDifferentDigits() { return CsvDataSource("DataSource\\SearchTestSuite\\TC12333_SearchByBTNWithDifferentDigits.csv"); }
+
+        /// <summary>
+        /// Data source for all the TC12482
+        /// </summary>
+        /// <returns>Role and array of parameters</returns>
+        public static IEnumerable TC12482_ByPassValidationForUser() { return CsvDataSource("DataSource\\SearchAndValidationTestSuite\\TC12482_ByPassValidationForUser.csv"); }
+
+        /// <summary>
+        /// Data source for all the TC12498
+        /// </summary>
+        /// <returns>Role and array of parameters</returns>
+        public static IEnumerable TC12498_UserValidationFailed() { return CsvDataSource("DataSource\\SearchAndValidationTestSuite\\TC12498_UserValidationFailed.csv"); }
+
+        /// <summary>
+        /// Data source for all the TC12512
+        /// </summary>
+        /// <returns>Role and array of parameters</returns>
+        public static IEnumerable TC12512_CustomerSummaryForUserBTN() { return CsvDataSource("DataSource\\SearchAndValidationTestSuite\\TC12512_CustomerSummaryForUserBTN.csv"); }
+    }
+}

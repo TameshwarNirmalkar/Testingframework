@@ -1,0 +1,389 @@
+﻿using Frontier.Framework.PageObject;
+using Frontier.Framework.Configuration;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.PageObjects;
+using System.Threading;
+
+namespace Frontier.IHD.PageObject
+{
+    public class ValidationSearchPage : BasePage
+    {
+        #region
+        //DOBCheckBox
+        [FindsBy(How = How.CssSelector, Using = "input[name='DOB']")]
+        public IWebElement DOBCheckBox { get; private set; }
+
+        //DOBAnswerText
+        [FindsBy(How = How.XPath, Using = "//td[contains(text(),'DOB:')]/../td[2]")]
+        public IWebElement DOBAnswerText { get; private set; }
+
+        //PINCheckBox
+        [FindsBy(How = How.CssSelector, Using = "input[name='PIN']")]
+        public IWebElement PINCheckBox { get; private set; }
+
+        //PINAnswerText
+        [FindsBy(How = How.XPath, Using = "//td[contains(text(),'PIN:')]/../td[2]")]
+        public IWebElement PINAnswerText { get; private set; }
+
+        //Last4SSNCheckBox
+        [FindsBy(How = How.CssSelector, Using = "input[name='SSN']")]
+        public IWebElement SSNCheckBox { get; private set; }
+
+        //SSNAnswerText
+        [FindsBy(How = How.XPath, Using = "//td[contains(text(),'SSN:')]/../td[2]")]
+        public IWebElement SSNAnswerText { get; private set; }
+
+        //PasswordCheckBox
+        [FindsBy(How = How.CssSelector, Using = "input[name='PWD']")]
+        public IWebElement PasswordCheckBox { get; private set; }
+
+        //PasswordAnswerText
+        [FindsBy(How = How.XPath, Using = "//td[contains(text(),'Password:')]/../td[2]")]
+        public IWebElement PasswordAnswerText { get; private set; }
+
+        //ValidationFailedButton
+        [FindsBy(How = How.XPath, Using = "*[@id=\"mainContent\"]/section[2]/section/div[4]/div/div[3]/div/div/input[1]")]
+        public IWebElement ValidationFailedButton { get; private set; }
+
+        //ByPassValidationButton
+        [FindsBy(How = How.XPath, Using = "//*[@id=\"mainContent\"]/section[2]/section/div[4]/div/div[3]/div/div/input[2]")]
+        public IWebElement ByPassValidationButton { get; private set; }
+
+        //ValidationButton
+        //[FindsBy(How = How.XPath, Using = "//*[@id=\"mainContent\"]/section[2]/section/div[4]/div/div[3]/div/div/input[3]")]
+        [FindsBy(How = How.CssSelector, Using = "input[value='VALIDATION SUCCESSFUL']")]
+        public IWebElement ValidationButton { get; private set; }
+
+        //SelectReasonDropDownList
+        [FindsBy(How = How.CssSelector, Using = "#mainContent > section:nth-child(2) > section > div.ValidationContainer > div > div.validation2 > div > div > select")]
+        public IWebElement SelectReasonDropDownList { get; private set; }
+
+        //CancelButton
+        [FindsBy(How = How.XPath, Using = "//input[@value='X']")]
+        public IWebElement CancelButton { get; private set; }
+
+        //CustomerSummaryTable
+        [FindsBy(How = How.CssSelector, Using = "#mainContent > section:nth-child(2) > section > div.ValidationContainer > div > div.validation3 > div > div > div > table")]
+        public IWebElement CustomerSummaryTable;
+
+        //MessageValidation
+        [FindsBy(How = How.XPath, Using = "//*[@id='mainContent']//div[4]/div/div[3]/div/div/div[1]/div[4]")]
+        public IWebElement MessageValidation;
+
+        //MaxOpenSessionText
+        [FindsBy(How = How.XPath, Using = "//*[@id=\"mainContent\"]/section[5]/section/div[4]/div/div[3]/div/div/div[3]/p")]
+        public IWebElement MaxOpenSessionText;
+
+        //SecurityQuestionCheckBox
+        [FindsBy(How = How.Name, Using = "SEC")]
+        private IWebElement SecQueCheckBox;
+
+        //SecurityAnswerCheckbox
+        [FindsBy(How = How.CssSelector, Using = "input[name='SEC']")]
+        public IWebElement SecurityAnswerCheckbox;
+
+        //SecurityAnswerText
+        [FindsBy(How = How.XPath, Using = "//*[@id='mainContent']/section[2]/section/div[4]/div/div[3]/div/div/div[1]/table/tbody/tr[2]/td[2]")]
+        private IWebElement SecAnsText;
+
+        //SecurityQuestionText
+        [FindsBy(How = How.XPath, Using = "//*[@id='mainContent']/section[2]/section/div[4]/div/div[3]/div/div/div[1]/table/tbody/tr[2]/td[1]")]
+        private IWebElement SecQueText;
+
+        //Primary Account Holder
+        [FindsBy(How = How.XPath, Using = "//div[@class='primaryAccountHolder']/p[1]")]
+        private IWebElement PrimaryAccountHolder;
+
+        [FindsBy(How = How.XPath, Using = "//*[@id=\"mainContent\"]/section[2]/section/div[4]/div/div[3]/div/div/div[1]/div[4]")]
+        public IWebElement ConfirmationMethodNotSelectedMessage;
+
+        //Customer's number displayed next to Primary Account Number
+        [FindsBy(How = How.XPath, Using = "//div[@class='primaryAccountHolder']/p[2]")]
+        public IWebElement CustomerNumber { get; private set; }
+
+        #endregion
+
+        public ValidationSearchPage(IWebDriver Driver)
+            : base(Driver)
+        {
+        }
+
+        /// <summary>
+        /// Validates the account of the customer
+        /// <param name="IsSecurityAnswerValid">Is Security Answer Valid (true/false)</param>
+        /// <param name="IsDOBValid">Is Customer's DOB valid (true/false)</param>
+        /// <param name="IsPINValid">Is Customer's PIN valid (true/false)</param>
+        /// <param name="IsSSNValid">Is Customer's SSN valid (true/false)</param>
+        /// <param name="IsPasswordValid">Is Customer's Password valid (true/false)</param>
+        /// <param name="Reason">Reason</param>
+        /// </summary>
+        /// <returns>the Customer360Page</returns>
+        public Customer360Page Validate(bool IsSecurityAnswerValid, bool IsDOBValid, bool IsPINValid, bool IsSSNValid, bool IsPasswordValid, string Reason)
+        {
+            if (IsSecurityAnswerValid && !string.IsNullOrEmpty(SecAnsText.Text))
+            {
+                Click(SecurityAnswerCheckbox);
+            }
+            if (IsDOBValid && !string.IsNullOrEmpty(DOBAnswerText.Text))
+            {
+                Click(DOBCheckBox);
+            }
+            if (IsPINValid && !string.IsNullOrEmpty(PINAnswerText.Text))
+            {
+                Click(PINCheckBox);
+            }
+            if (IsSSNValid && !string.IsNullOrEmpty(SSNAnswerText.Text))
+            {
+                Click(SSNCheckBox);
+            }
+            if (IsPasswordValid && !string.IsNullOrEmpty(PasswordAnswerText.Text))
+            {
+                Click(PasswordCheckBox);
+            }
+            if (!string.IsNullOrEmpty(Reason))
+            {
+                SelectByText(SelectReasonDropDownList, Reason);
+            }
+
+            Click(ValidationButton);
+            return new Customer360Page(baseDriver);
+        }
+
+        /// <summary>
+        /// This function is used to Click Validation Button
+        /// </summary>
+        /// <returns>the Customer360Page</returns>
+        public Customer360Page Validate()
+        {
+            Click(ValidationButton);
+            return new Customer360Page(baseDriver);
+        }
+
+        /// <summary>
+        /// This function is used to Click ValidationFailed Button
+        /// </summary>
+        /// <returns>the AdvancedSearchPage</returns>
+        public AdvancedSearchPage ValidationFailed()
+        {
+            Click(ValidationFailedButton);
+            return new AdvancedSearchPage(baseDriver);
+        }
+
+        /// <summary>
+        /// This function is used to Click ByPass Validation Button
+        /// </summary>
+        /// <returns>the Customer360Page</returns>
+        public Customer360Page ByPassValidation(string Reason)
+        {
+            SelectByText(SelectReasonDropDownList, Reason);
+            Click(ByPassValidationButton);
+            return new Customer360Page(baseDriver);
+        }
+
+        /// <summary>
+        /// Clicks the Cancel Button and returns the Advanced Search Page
+        /// </summary>
+        /// <returns>the AdvancedSearchPage</returns>
+        public AdvancedSearchPage CancelValidation()
+        {
+            Click(CancelButton);
+            return new AdvancedSearchPage(baseDriver);
+        }
+
+        /// <summary>
+        /// This functions Clicks the DOB checkbox as a confirmation method
+        /// </summary>
+        /// <returns>the ValidationSearchPage</returns>
+        public ValidationSearchPage SelectDOB()
+        {
+            Click(DOBCheckBox);
+            return this;
+        }
+
+        /// <summary>
+        /// It Clicks the PIN checkbox as a confirmation method
+        /// </summary>
+        /// <returns>the ValidationSearchPage</returns>
+        public ValidationSearchPage SelectPIN()
+        {
+            Click(PINCheckBox);
+            return this;
+        }
+
+        /// <summary>
+        /// This function Clicks the SSN Checkbox as a confirmation method
+        /// </summary>
+        /// <returns>the ValidationSearchPage</returns>
+        public ValidationSearchPage SelectSSN()
+        {
+            Click(SSNCheckBox);
+            return this;
+        }
+
+        /// <summary>
+        /// It Clicks the Password checkbox as a confirmation method
+        /// </summary>
+        /// <returns>the ValidationSearchPage</returns>
+        public ValidationSearchPage SelectPassword()
+        {
+            Click(PasswordCheckBox);
+            return this;
+        }
+
+        /// <summary>
+        /// This function selects a reason from the dropdownbox on the page
+        /// </summary>
+        /// <returns>the ValidationSearchPage</returns>
+        public ValidationSearchPage SelectReason(string Reason)
+        {
+            SelectByText(SelectReasonDropDownList, Reason);
+            return this;
+        }
+
+        /// <summary>
+        /// This function returns the CustomerSummaryTable object
+        /// </summary>
+        public IWebElement GetCustomerSummaryTable()
+        {
+            return CustomerSummaryTable;
+        }
+
+        /// <summary>
+        /// Get the validation message in the validation page. 
+        /// </summary>
+        public IWebElement GetMessageValidation()
+        {
+            return MessageValidation;
+        }
+
+        /// <summary>
+        /// This function checks if the DOB Checkbox is present or not
+        /// </summary>
+        /// <returns>
+        /// True-> If DOBCheckbox is present, else false;
+        /// </returns>
+        public bool IsDOBCheckboxPresent()
+        {
+            if (DOBCheckBox != null)
+                return true;
+            else
+                return false;
+        }
+
+        /// <summary>
+        /// This function checks if the PIN Checkbox is present or not
+        /// </summary>
+        /// <returns>
+        /// True-> If PINCheckbox is present, else false;
+        /// </returns>
+        public bool IsPINCheckboxPresent()
+        {
+            if (PINCheckBox != null)
+                return true;
+            else
+                return false;
+        }
+
+        public bool isSecurityAnswerCheckboxPresent()
+        {
+            SecurityAnswerCheckbox = FindWebElement(By.CssSelector("input[name='SEC']"), ConfigurationReader.FrameworkConfig.GetImplicitlyTimeout());
+            if (SecurityAnswerCheckbox != null)
+                return true;
+            else
+                return false;
+        }
+
+        /// <summary>
+        /// This function checks if the SSN Checkbox is present or not
+        /// </summary>
+        /// <returns>
+        /// True-> If SSNCheckbox is present, else false;
+        /// </returns>
+        public bool IsSSNCheckboxPresent()
+        {
+            if (SSNCheckBox != null)
+                return true;
+            else
+                return false;
+        }
+
+        /// <summary>
+        /// This function checks if the Password Checkbox is present or not
+        /// </summary>
+        /// <returns>
+        /// True-> If PasswordCheckbox is present, else false;
+        /// </returns>
+        public bool IsPasswordCheckboxPresent()
+        {
+            if (PasswordCheckBox != null)
+                return true;
+            else
+                return false;
+        }
+
+        /// <summary>
+        /// This function checks if all the confirmation options are present or not
+        /// </summary>
+        /// <returns>
+        /// True-> If all confirmation options are present, else false;
+        /// </returns>
+        public bool ValidateConfirmationOptions()
+        {
+            if (IsDOBCheckboxPresent() && IsPINCheckboxPresent() && IsSSNCheckboxPresent() && IsPasswordCheckboxPresent())
+                return true;
+            else
+                return false;
+        }
+
+        /// <summary>
+        /// This function returns the Primary Account Holder element
+        /// </summary>
+        public string GetPrimaryAccountHolder()
+        {
+            return PrimaryAccountHolder.Text;
+        }
+
+        /// <summary>
+        /// This function returns the Security Answer Text element
+        /// </summary>
+        public IWebElement GetSecAnsText()
+        {
+            return SecAnsText;
+        }
+        /// <summary>
+        /// This function returns the Security Question Text element
+        /// </summary>
+        public IWebElement GetSecQueText()
+        {
+            return SecQueText;
+        }
+        /// <summary>
+        /// This function selects the Security Question Checkbox
+        /// </summary>
+        public ValidationSearchPage SelectSecQue()
+        {
+            Click(SecQueCheckBox);
+            return this;
+        }
+        /// <summary>
+        /// This function returns the MaxOpenSessionText element
+        /// </summary>
+        public IWebElement GetMaxOpenSessionText()
+        {
+            string message = "Max opened customer sessions";
+            if (MaxOpenSessionText.Text.ToUpper().Contains(message.ToUpper()))
+            {
+                return MaxOpenSessionText;
+            }
+            else
+                return null;
+        }
+        /// <summary>
+        /// This function returns the BTN/WTN number displayed on Validation Search Page
+        /// </summary>
+        public string GetCustomerNumber()
+        {
+            return CustomerNumber.Text;
+        }
+    }
+}
